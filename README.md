@@ -174,42 +174,4 @@ To use PostgreSQL in production:
    </dependency>
    ```
 
-## Future Enhancements
-
-Consider adding these features to make your project even more impressive:
-
-- **User Authentication**: Spring Security for multi-user support
-- **Data Export**: Export transactions to CSV/PDF
-- **Charts**: Add visual charts using Chart.js or similar
-- **Mobile Responsive**: Enhanced mobile UI
-- **Email Notifications**: Budget alerts via email
-- **Data Import**: Import transactions from bank statements
-- **Goal Tracking**: Set and track savings goals
-- **Tags**: Add tags to transactions for better filtering
-- **Search**: Advanced search with multiple filters
-
-## Resume Tips
-
-When adding this to your resume:
-
-**Project Title**: Personal Finance Management System
-
-**Description**: "Developed a full-stack web application using Spring Boot and Thymeleaf for tracking personal finances, managing budgets, and generating financial reports."
-
-**Key Points**:
-- Implemented RESTful MVC architecture with Spring Boot, JPA, and Thymeleaf
-- Designed normalized database schema with entities, repositories, and custom queries
-- Created comprehensive CRUD operations for transactions, budgets, and categories
-- Built dynamic financial reports with category-based spending analysis
-- Implemented form validation, exception handling, and user-friendly error messages
-- Used Git for version control and Maven for dependency management
-
-**Technologies**: Java 17, Spring Boot, Spring Data JPA, Thymeleaf, H2/PostgreSQL, Maven, HTML/CSS
-
-## License
-
-This project is open source and available for educational purposes.
-
-## Contributing
-
 Feel free to fork this project and add your own features!
