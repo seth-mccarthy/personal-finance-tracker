@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .stat {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>💰 Personal Finance Tracker</h1>
+    
+    <div class="stats">
+        <div class="stat">
+            <h3>Total Balance</h3>
+            <p th:text="'$' + ${balance}">$0.00</p>
+        </div>
+        <div class="stat">
+            <h3>Monthly Income</h3>
+            <p th:text="'$' + ${monthlyIncome}">$0.00</p>
+        </div>
+        <div class="stat">
+            <h3>Monthly Expenses</h3>
+            <p th:text="'$' + ${monthlyExpenses}">$0.00</p>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>Quick Actions</h2>
+        <a href="/transactions">View Transactions</a> | 
+        <a href="/budgets">View Budgets</a> | 
+        <a href="/categories">Manage Categories</a> | 
+        <a href="/reports">View Reports</a>
+    </div>
+    
+    <div class="card">
+        <h2>Recent Transactions</h2>
+        <p th:if="${#lists.isEmpty(recentTransactions)}">No transactions yet. Add your first transaction!</p>
+        <ul th:unless="${#lists.isEmpty(recentTransactions)}">
+            <li th:each="t : ${recentTransactions}">
+                <span th:text="${t.transactionDate}">Date</span> - 
+                <span th:text="${t.category.name}">Category</span> - 
+                <span th:text="'$' + ${t.amount}">Amount</span>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

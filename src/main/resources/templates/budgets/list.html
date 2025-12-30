@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Budgets - Finance Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #333; }
+        .nav { background: #667eea; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        .nav a { color: white; text-decoration: none; margin-right: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .btn { padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 6px; display: inline-block; border: none; cursor: pointer; font-size: 14px; }
+        .btn-danger { background: #ef4444; }
+        .btn-secondary { background: #6b7280; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .alert { padding: 15px; margin: 15px 0; border-radius: 6px; }
+        .alert-success { background: #d1fae5; color: #065f46; }
+        .progress-bar { background: #e5e7eb; border-radius: 20px; height: 20px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { height: 100%; transition: width 0.3s; }
+        .budget-item { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #e5e7eb; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/transactions">Transactions</a>
+        <a href="/budgets">Budgets</a>
+        <a href="/categories">Categories</a>
+        <a href="/reports">Reports</a>
+    </div>
+    
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h1>Budgets</h1>
+        <a href="/budgets/new" class="btn">+ Add Budget</a>
+    </div>
+    
+    <div class="card">
+        <form method="get" action="/budgets" style="display:grid;grid-template-columns:1fr auto;gap:15px;">
+            <div class="form-group" style="margin:0;">
+                <label for="period">Period (YYYY-MM)</label>
+                <input type="month" id="period" name="period" th:value="${currentPeriod}">
+            </div>
+            <button type="submit" class="btn" style="margin-top:28px;">Filter</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h2 th:text="'Budgets for ' + ${currentPeriod}">Budgets</h2>
+        
+        <div th:if="${#lists.isEmpty(budgets)}" style="text-align:center;padding:40px;color:#6b7280;">
+            <p>No budgets set for this period.</p>
+        </div>
+        
+        <div th:unless="${#lists.isEmpty(budgets)}">
+            <div th:each="budget : ${budgets}" class="budget-item">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <div>
+                        <h3 style="font-size:18px;margin:0;" th:text="${budget.category.name}">Category</h3>
+                        <p style="color:#6b7280;margin:5px 0;">
+                            <span th:text="'$' + ${budget.spent}">$0</span> of 
+                            <span th:text="'$' + ${budget.limitAmount}">$0</span>
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/budgets/{id}/edit(id=${budget.id})}" class="btn btn-secondary" style="padding:6px 12px;margin-right:5px;">Edit</a>
+                        <form th:action="@{/budgets/{id}/delete(id=${budget.id})}" method="post" style="display:inline;">
+                            <input type="hidden" name="period" th:value="${currentPeriod}">
+                            <button type="submit" class="btn btn-danger" style="padding:6px 12px;" 
+                                    onclick="return confirm('Delete this budget?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" 
+                         th:style="'width:' + ${budget.percentageUsed > 100 ? 100 : budget.percentageUsed} + '%;background:' + (${budget.overBudget} ? '#ef4444' : (${budget.percentageUsed >= 80} ? '#f59e0b' : '#10b981'))"></div>
+                </div>
+                
+                <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:14px;">
+                    <span th:style="'color:' + (${budget.overBudget} ? '#ef4444' : (${budget.percentageUsed >= 80} ? '#f59e0b' : '#6b7280'))" 
+                          th:text="${budget.percentageUsed} + '% used'">0%</span>
+                    <span th:style="'color:' + (${budget.overBudget} ? '#ef4444' : '#6b7280')" 
+                          th:text="${budget.overBudget ? 'Over by $' + (-budget.remaining) : '$' + budget.remaining + ' remaining'}">
+                        $0 remaining
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

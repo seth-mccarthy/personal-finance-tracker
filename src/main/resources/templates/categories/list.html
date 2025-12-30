@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories - Finance Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1 { color: #333; }
+        .nav { background: #667eea; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        .nav a { color: white; text-decoration: none; margin-right: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn { padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 6px; display: inline-block; }
+        .btn-danger { background: #ef4444; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f9f9f9; }
+        .alert { padding: 15px; margin: 15px 0; border-radius: 6px; }
+        .alert-success { background: #d1fae5; color: #065f46; }
+        .alert-error { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/transactions">Transactions</a>
+        <a href="/budgets">Budgets</a>
+        <a href="/categories">Categories</a>
+        <a href="/reports">Reports</a>
+    </div>
+    
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+    
+    <h1>Categories</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <a href="/categories/new" class="btn">+ Add Category</a>
+    </div>
+    
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Color</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.name}">Category Name</td>
+                    <td th:text="${category.description ?: 'N/A'}">Description</td>
+                    <td th:text="${category.type}">Type</td>
+                    <td>
+                        <div th:if="${category.colorCode}" 
+                             th:style="'width:30px;height:30px;background:' + ${category.colorCode} + ';border-radius:4px;'"></div>
+                    </td>
+                    <td>
+                        <a th:href="@{/categories/{id}/edit(id=${category.id})}" class="btn" style="padding:6px 12px;font-size:14px;">Edit</a>
+                        <form th:action="@{/categories/{id}/delete(id=${category.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" style="padding:6px 12px;font-size:14px;" 
+                                    onclick="return confirm('Delete this category?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
