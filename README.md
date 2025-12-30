@@ -17,7 +17,7 @@ A comprehensive Spring Boot web application for managing personal finances, trac
 - **Frontend**: Thymeleaf, HTML5, CSS3
 - **Database**: H2 (development), easily switchable to PostgreSQL
 - **Build Tool**: Maven
-- **Java Version**: 17
+- **Java Version**: 21
 
 ## Project Structure
 
@@ -175,3 +175,4 @@ To use PostgreSQL in production:
    ```
 
 Feel free to fork this project and add your own features!
+
